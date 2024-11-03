@@ -46,7 +46,7 @@ export const MaxLowAverageTab = ({ regionCode, unit }: MaxLowAverageTabProps) =>
   
         // Calculate daily max, min, and avg prices
         const tempChartData = [];
-        let currentDate = new Date(startDate);
+        const currentDate = new Date(startDate);
   
         while (currentDate <= endDate) {
           const dayIndex = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));

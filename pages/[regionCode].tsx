@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { CurrentPricesTab } from '@/components/CurrentPricesTab';
 import { MaxLowAverageTab } from '@/components/MaxLowAverageTab';
 import { HourlyAveragesTab } from '@/components/HourlyAveragesTab';
-import { LineChart, BadgeInfo, CalendarSearch } from "lucide-react";
+import { LineChart, CalendarSearch } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { format } from "date-fns";
 
