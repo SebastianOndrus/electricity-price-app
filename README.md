@@ -1,40 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Electricity Price Application
 
-## Getting Started
+An interactive application built using Next.js, TypeScript, and TailwindCSS, this project provides real-time electricity prices across different regions. Users can filter, search, and view price details for selected regions, along with daily highs/lows and hourly averages. This application fetches data from the Energy Charts API and presents it in a responsive and user-friendly interface.
 
-First, run the development server:
+Watch [showcase video](https://youtu.be/ADnPR82toPshttps://yourvideo-link.com) to see the app in action!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Table of Contents
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Used API](#api)
+- [Setup & Installation](#setup--installation)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Docker Deployment](#docker-deployment)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **Styling**: TailwindCSS
+- **Data Fetching**: React Query
+- **Component Library**: shadcn UI
+- **Charting**: Recharts (shadcn UI uses Recharts internally)
+- **Containerization**: Docker
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Features
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+1. **Overview Page**: Displays a searchable, filterable, sortable list of regions with current electricity prices.
+   - Search by region name or code.
+   - Sort by name or price, in ascending or descending order.
+   - Set a custom price range.
+2. **Detail Page**: Provides detailed price data for a selected region, with tabs for various data types:
+   - **Daily Prices**: View hourly electricity prices for a specific day.
+   - **High/Low/Average Prices**: See daily highs, lows, and averages over a selected date range.
+   - **Hourly Averages**: Shows average prices by hour of a day across a custom date range.
+3. **Responsive Design**: Ensures the app looks great and functions smoothly on both desktop and mobile devices.
+4. **Docker Support**: Run the application in a Docker container for easier deployment and environment consistency.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API
 
-## Learn More
+This application retrieves electricity price data from the [Energy Charts API](https://api.energy-charts.info/).. Data is proxied through a Next.js API route (`/api/proxy-price`) to handle CORS issues and provide custom filtering and error handling.
+- **Endpoint**: `/api/proxy-price`
+- **Parameters**:
+  - `bzn` (required): The bidding zone or region code (e.g., `DE-LU` for Germany and Luxembourg).
+  - `start` (optional): Start date for the data range in `YYYY-MM-DD` format.
+  - `end` (optional): End date for the data range in `YYYY-MM-DD` format.
+- **Data Returned**: Prices by hour, with the following structure:
+  - `price`: Array of prices (EUR/MWh) for each hour.
+  - `unix_seconds`: Timestamps for each hourly price.
+  - `unit`: Unit of the price values (usually EUR/MWh).
+  - `license_info`: Information about licensing.
+  - `deprecated`: Flag indicating if the data is deprecated.
 
-To learn more about Next.js, take a look at the following resources:
+## Setup & Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### Prerequisites
+- **Node.js** (v14 or higher recommended)
+- **Docker** (optional, if deploying with Docker)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/SebastianOndrus/electricity-price-app.git
+   cd electricity-price-app
+   ```
+2. **Install dependencies**:
+   ```bash
+    npm install
+    ```
+3. **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to view the app in your browser.
+4. **Build the application**:
+    ```bash
+    npm run build
+    npm start
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Usage
+- **Overview Page**: Browse regions with the latest electricity prices. Use the search bar, filters, and sorting options to narrow down your results.
+- **Detail Page**: Click on a region to view detailed data. Use tabs to switch between daily prices, high/low/average, and hourly averages. Adjust date ranges as needed.
+- **Navigation**: Return to the main overview page using the provided link or button on the detail pages.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+### Docker deployment
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/SebastianOndrus/electricity-price-app.git
+   cd electricity-price-app
+   ```
+2. **Build the Docker image**:
+    ```bash
+    docker build -t electricity-price-app .
+    ```
+3. **Run the Docker container**:
+    ```bash
+    docker run -p 3000:3000 electricity-price-app
+    ```
